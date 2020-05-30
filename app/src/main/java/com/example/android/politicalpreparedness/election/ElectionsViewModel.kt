@@ -1,10 +1,14 @@
 package com.example.android.politicalpreparedness.election
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
+import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.CivicsApiService
+import com.example.android.politicalpreparedness.network.ElectionRepository
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.ElectionResponse
 import kotlinx.coroutines.CoroutineScope
@@ -13,8 +17,8 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
 //TODO: Construct ViewModel and provide election datasource
-class ElectionsViewModel : ViewModel() {
-    private val _electionData = MutableLiveData<ElectionResponse>()
+class ElectionsViewModel(private val electionRepository: ElectionRepository) : ViewModel() {
+    private val _val = MutableLiveData<List<Election>>()
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -23,16 +27,15 @@ class ElectionsViewModel : ViewModel() {
         getElectionData()
     }
 
-    val electionLiveData: LiveData<ElectionResponse>
-        get() = _electionData
-
 
     private fun getElectionData() {
         viewModelScope.launch {
             val data = CivicsApi.retrofitService.getElections()
-            _electionData.value = data
+            _val.value = data.elections
         }
     }
+
+    val electionListItems: LiveData<List<Election>> = _val
 
     //TODO: Create live data val for upcoming elections
 

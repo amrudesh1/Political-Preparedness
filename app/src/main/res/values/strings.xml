@@ -17,4 +17,6 @@
     <string name="use_my_location">Use My Location</string>
     <string name="upcoming_elections">Upcoming Elections</string>
     <string name="political_prep">Political Preparedness</string>
+    <string name="saved_elections">Saved Elections</string>
+    <string name="election_name">Election Name</string>
 </resources>
