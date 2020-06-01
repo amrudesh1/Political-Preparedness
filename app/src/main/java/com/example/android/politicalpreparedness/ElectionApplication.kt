@@ -29,9 +29,17 @@ import timber.log.Timber.DebugTree
  */
 class ElectionApplication : Application() {
 
+    companion object {
+
+        lateinit var instance: Application
+
+    }
 
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) Timber.plant(DebugTree())
+        instance = this
+
     }
+
 }
