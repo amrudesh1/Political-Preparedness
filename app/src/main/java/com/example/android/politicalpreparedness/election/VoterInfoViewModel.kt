@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class VoterInfoViewModel(val repository: ElectionRepository) : ViewModel() {
 
@@ -30,9 +31,15 @@ class VoterInfoViewModel(val repository: ElectionRepository) : ViewModel() {
 
 
     fun getVoterInfoData(id: Int, address: String): LiveData<List<State>> {
-        viewModelScope.launch {
-            val data = CivicsApi.retrofitService.getVoterInfo(id, address)
-            stateData.value = data.state
+        try {
+
+
+            viewModelScope.launch {
+                val data = CivicsApi.retrofitService.getVoterInfo(id, address)
+                stateData.value = data.state
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         return stateData
     }
