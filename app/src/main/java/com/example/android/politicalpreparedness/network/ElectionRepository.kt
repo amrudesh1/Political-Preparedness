@@ -20,6 +20,8 @@ class ElectionRepository {
 
     fun getAllElection() = electionDao.getAllElection()
 
-     fun getRepresentativesDeferred(address: String) =
+    fun getRepresentativesDeferred(address: String) =
             CivicsApi.retrofitService.getRepresentatives(address)
+
+    suspend fun getElections() = CivicsApi.retrofitService.getElections()
 }
