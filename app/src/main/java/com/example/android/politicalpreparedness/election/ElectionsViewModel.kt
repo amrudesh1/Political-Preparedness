@@ -28,7 +28,7 @@ class ElectionsViewModel(private val electionRepository: ElectionRepository) : V
 
     private fun getElectionData() {
         viewModelScope.launch {
-            val data = CivicsApi.retrofitService.getElections()
+            val data = electionRepository.getElections()
             _val.value = data.elections
         }
     }
