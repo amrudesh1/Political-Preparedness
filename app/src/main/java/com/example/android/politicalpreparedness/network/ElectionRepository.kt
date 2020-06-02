@@ -19,4 +19,7 @@ class ElectionRepository {
             electionDao.isFollowing(id)
 
     fun getAllElection() = electionDao.getAllElection()
+
+     fun getRepresentativesDeferred(address: String) =
+            CivicsApi.retrofitService.getRepresentatives(address)
 }
