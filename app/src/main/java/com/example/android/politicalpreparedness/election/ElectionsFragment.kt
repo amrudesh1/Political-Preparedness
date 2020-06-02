@@ -5,17 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.android.politicalpreparedness.R
+import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.databinding.FragmentElectionBinding
 import com.example.android.politicalpreparedness.election.adapter.ElectionListAdapter
-import com.example.android.politicalpreparedness.election.adapter.ElectionListener
 import com.example.android.politicalpreparedness.getViewModelFactory
-import com.example.android.politicalpreparedness.network.models.Election
 import timber.log.Timber
 
 class ElectionsFragment : Fragment() {
@@ -25,6 +21,9 @@ class ElectionsFragment : Fragment() {
     lateinit var fragmentElectionBinding: FragmentElectionBinding
 
     private lateinit var electionListAdapter: ElectionListAdapter
+
+    private lateinit var followingListAdapter: ElectionListAdapter
+
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -44,12 +43,25 @@ class ElectionsFragment : Fragment() {
     private fun setupListAdapter() {
         val viewModel = fragmentElectionBinding.electionViewModel
         if (viewModel != null) {
-            electionListAdapter = ElectionListAdapter(electionsViewModel, object : ElectionListener {
-                override fun onClick(election: Election) {
+            electionListAdapter = ElectionListAdapter {
+                findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it))
+            }
+            fragmentElectionBinding.upcomingElectionRecyclerView.adapter = electionListAdapter
+
+            followingListAdapter = ElectionListAdapter {
+                findNavController().navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(it))
+            }
+            fragmentElectionBinding.savedElectionRecyclerView.adapter = followingListAdapter
+
+            //Observer for ProgressBar
+            electionsViewModel.electionListItems.observe(viewLifecycleOwner, Observer {
+                if (it.isEmpty()) {
+                    fragmentElectionBinding.upcomingElectionProgressbar.visibility = View.VISIBLE
+                } else {
+                    fragmentElectionBinding.upcomingElectionProgressbar.visibility = View.GONE
 
                 }
             })
-            fragmentElectionBinding.upcomingElectionRecyclerView.adapter = electionListAdapter
         } else {
             Timber.w("ViewModel not initialized when attempting to set up adapter.")
         }

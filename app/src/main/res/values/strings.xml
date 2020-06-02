@@ -19,4 +19,5 @@
     <string name="political_prep">Political Preparedness</string>
     <string name="saved_elections">Saved Elections</string>
     <string name="election_name">Election Name</string>
+    <string name="follow_election">Follow Election</string>
 </resources>

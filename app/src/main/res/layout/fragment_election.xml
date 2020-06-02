@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/upcoming_election_parent_layout"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -41,13 +41,20 @@
                 android:textSize="@dimen/default_header_size"
                 android:textStyle="bold" />
 
+            <ProgressBar
+                android:id="@+id/upcoming_election_progressbar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/upcoming_election_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@id/upcoming_election_header"
                 android:layout_marginTop="10dp"
                 app:setAdapter="@{electionViewModel.electionListItems}" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -74,7 +81,8 @@
                 android:id="@+id/saved_election_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                app:setFollowingElectionAdapter="@{electionViewModel.followingListItems}" />
         </LinearLayout>
 
         <!-- TODO: Add Upcoming Election Recycler and Header -->

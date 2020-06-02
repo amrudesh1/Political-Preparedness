@@ -21,6 +21,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.example.android.politicalpreparedness.election.ElectionsViewModel
+import com.example.android.politicalpreparedness.election.VoterInfoViewModel
 import com.example.android.politicalpreparedness.network.ElectionRepository
 
 /**
@@ -41,6 +42,8 @@ class ViewModelFactory constructor(
         when {
             isAssignableFrom(ElectionsViewModel::class.java) ->
                 ElectionsViewModel(electionRepository)
+            isAssignableFrom(VoterInfoViewModel::class.java)
+            -> VoterInfoViewModel(electionRepository)
             else ->
                 throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
