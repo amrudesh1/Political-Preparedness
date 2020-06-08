@@ -45,6 +45,5 @@ fun setRepresentativeAdapter(recyclerView: RecyclerView, items: List<Representat
     }
     recyclerView.apply {
         layoutManager = LinearLayoutManager(recyclerView.context)
-        addItemDecoration(SpacesItemDecoration(10))
     }
 }
