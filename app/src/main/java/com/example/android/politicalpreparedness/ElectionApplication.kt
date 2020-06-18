@@ -17,7 +17,6 @@
 package com.example.android.politicalpreparedness
 
 import android.app.Application
-import com.example.android.politicalpreparedness.network.ElectionRepository
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 

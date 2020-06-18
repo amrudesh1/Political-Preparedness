@@ -1,5 +1,6 @@
 package com.example.android.politicalpreparedness.election
 
+import android.accounts.NetworkErrorException
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -12,6 +13,7 @@ import com.example.android.politicalpreparedness.network.CivicsApi
 import com.example.android.politicalpreparedness.network.ElectionRepository
 import com.example.android.politicalpreparedness.network.models.Election
 import com.example.android.politicalpreparedness.network.models.State
+import com.example.android.politicalpreparedness.util.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -25,23 +27,25 @@ class VoterInfoViewModel(val repository: ElectionRepository) : ViewModel() {
 
     private var viewModelJob = SupervisorJob()
     private var viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-    private var stateData = MutableLiveData<List<State>>()
+    var stateData = MutableLiveData<List<State>>()
     var intentData = MutableLiveData<String>()
     var isFollowing = MutableLiveData<Int>()
 
 
-    fun getVoterInfoData(id: Int, address: String): LiveData<List<State>> {
+    fun getVoterInfoData(id: Int, address: String) {
         try {
-
-
             viewModelScope.launch {
-                val data = CivicsApi.retrofitService.getVoterInfo(id, address)
-                stateData.value = data.state
+                val voterInfoData = try {
+                    repository.getVoterInfo(id, address).await().state
+                } catch (e: Exception) {
+                    emptyList<State>()
+                }
+
+                stateData.postValue(voterInfoData)
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (throwable: Throwable) {
+            emptyList<State>()
         }
-        return stateData
     }
 
     fun setBrowserIntent(url: String?) {

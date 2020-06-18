@@ -10,6 +10,7 @@ import com.example.android.politicalpreparedness.network.ElectionRepository
 
 fun Fragment.getViewModelFactory(): ViewModelFactory {
     val repository = ElectionRepository()
+
     return ViewModelFactory(repository, this)
 }
 

@@ -39,13 +39,15 @@ class VoterInfoFragment : Fragment() {
         election = VoterInfoFragmentArgs.fromBundle(arguments!!).election
         fragmentVoterInfoBinding.voterViewModel = voterInfoViewModel
 
+        fragmentVoterInfoBinding.voterInfoProgress.visibility = View.GONE
+
 
         voterInfoViewModel.getVoterInfoData(election.id, election.division.state)
+        voterInfoViewModel.stateData
                 .observe(viewLifecycleOwner, Observer {
                     if (it.isEmpty()) {
-                        fragmentVoterInfoBinding.voterInfoProgress.visibility = View.VISIBLE
-                    } else {
                         fragmentVoterInfoBinding.voterInfoProgress.visibility = View.GONE
+                    } else {
                         state = it[0]
                         fragmentVoterInfoBinding.state = state
 

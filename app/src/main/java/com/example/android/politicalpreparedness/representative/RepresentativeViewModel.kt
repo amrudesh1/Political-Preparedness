@@ -1,10 +1,14 @@
 package com.example.android.politicalpreparedness.representative
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.android.politicalpreparedness.network.ElectionRepository
+import com.example.android.politicalpreparedness.network.models.Office
+import com.example.android.politicalpreparedness.network.models.Official
 import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.util.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,14 +24,13 @@ class RepresentativeViewModel(val repository: ElectionRepository) : ViewModel() 
     private val viewModelJob = SupervisorJob()
     private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-
     //TODO: Create function to fetch representatives from API from a provided address
     fun getRepresentatives(address: String): LiveData<List<Representative>> {
         viewModelScope.launch {
             try {
                 val (offices, officials) = repository.getRepresentativesDeferred(address).await()
-                _respresentatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
 
+                _respresentatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
