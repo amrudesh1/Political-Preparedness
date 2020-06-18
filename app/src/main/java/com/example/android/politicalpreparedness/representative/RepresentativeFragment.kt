@@ -27,6 +27,7 @@ import com.example.android.politicalpreparedness.databinding.FragmentRepresentat
 import com.example.android.politicalpreparedness.network.models.Address
 import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.location.*
+import java.lang.Exception
 import java.util.*
 
 
@@ -59,11 +60,11 @@ class DetailFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
         fragmentRepresentativeBinding = FragmentRepresentativeBinding.inflate(inflater, container, false)
 
-        address1 = fragmentRepresentativeBinding.addressLine1
-        address2 = fragmentRepresentativeBinding.addressLine2
-        city = fragmentRepresentativeBinding.city
-        zip = fragmentRepresentativeBinding.zip
-        state = fragmentRepresentativeBinding.state
+        address1 = fragmentRepresentativeBinding.scrollableHeader.addressLine1
+        address2 = fragmentRepresentativeBinding.scrollableHeader.addressLine2
+        city = fragmentRepresentativeBinding.scrollableHeader.city
+        zip = fragmentRepresentativeBinding.scrollableHeader.zip
+        state = fragmentRepresentativeBinding.scrollableHeader.state
 
 
         val states = resources.getStringArray(R.array.states)
@@ -75,7 +76,7 @@ class DetailFragment : Fragment() {
 
 
 
-        fragmentRepresentativeBinding.buttonSearch.setOnClickListener {
+        fragmentRepresentativeBinding.scrollableHeader.buttonSearch.setOnClickListener {
             hideKeyboard()
             if (checkFieldsAreEmpty()) {
                 val address = Address(address1.text.toString(), address2.text.toString(), city.text.toString(), state.selectedItem.toString(), zip.text.toString()).toFormattedString()
@@ -84,25 +85,19 @@ class DetailFragment : Fragment() {
             }
         }
 
-        fragmentRepresentativeBinding.buttonLocation.setOnClickListener {
+        fragmentRepresentativeBinding.scrollableHeader.buttonLocation.setOnClickListener {
             if (checkLocationPermissions()) {
                 getLocation()
             }
         }
 
 
-        //TODO: Establish bindings
 
-        //TODO: Define and assign Representative adapter
-
-        //TODO: Populate Representative adapter
-
-        //TODO: Establish button listeners for field and location search
         return fragmentRepresentativeBinding.root
     }
 
     private fun getRepList(address: String) {
-        firstTime = false;
+        firstTime = false
         representativeViewModel.getRepresentatives(address).observe(viewLifecycleOwner, Observer {
             representativeListAdapter = RepresentativeListAdapter()
             fragmentRepresentativeBinding.representationViewModel = representativeViewModel
@@ -179,31 +174,33 @@ class DetailFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
-        val locationRequest = LocationRequest()
-        locationRequest.setInterval(10000)
-        locationRequest.setFastestInterval(3000)
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        try {
+            val locationRequest = LocationRequest()
+            locationRequest.setInterval(10000)
+            locationRequest.setFastestInterval(3000)
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
 
-        val locationData = activity?.applicationContext?.let { LocationServices.getFusedLocationProviderClient(it) }
+            val locationData = activity?.applicationContext?.let { LocationServices.getFusedLocationProviderClient(it) }
 
-        locationData?.requestLocationUpdates(locationRequest, object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult?) {
-                super.onLocationResult(result)
-                if (result != null && result.locations.size > 0) {
-                    val latestLocationIndex = result.locations.size - 1
-                    val address = geoCodeLocation(result.locations[latestLocationIndex])
-                    fragmentRepresentativeBinding.address = address
-                    if (firstTime) {
-                        getRepList(address.toFormattedString())
+            locationData?.requestLocationUpdates(locationRequest, object : LocationCallback() {
+                override fun onLocationResult(result: LocationResult?) {
+                    super.onLocationResult(result)
+                    if (result != null && result.locations.size > 0) {
+                        val latestLocationIndex = result.locations.size - 1
+                        val address = geoCodeLocation(result.locations[latestLocationIndex])
+                        fragmentRepresentativeBinding.scrollableHeader.address = address
+                        if (firstTime) {
+                            getRepList(address.toFormattedString())
+                        }
+
                     }
-
                 }
-            }
-        }, Looper.getMainLooper())
+            }, Looper.getMainLooper())
+            
 
-
-        //TODO: Get location from LocationServices
-        //TODO: The geoCodeLocation method is a helper function to change the lat/long location to a human readable street address
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     private fun geoCodeLocation(location: Location): Address {

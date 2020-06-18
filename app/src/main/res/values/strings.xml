@@ -20,4 +20,8 @@
     <string name="saved_elections">Saved Elections</string>
     <string name="election_name">Election Name</string>
     <string name="follow_election">Follow Election</string>
+    <string name="profileImage">profileImage</string>
+    <string name="wwwImage">wwwImage</string>
+    <string name="facebookIcon">facebookIcon</string>
+    <string name="twitterIcon">twitterIcon</string>
 </resources>

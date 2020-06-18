@@ -4,16 +4,18 @@
 
     <Transition
         motion:constraintSetEnd="@+id/end"
-        motion:constraintSetStart="@+id/start">
+        motion:constraintSetStart="@+id/start"
+        motion:duration="500"
+        motion:motionInterpolator="linear">
         <OnSwipe
             motion:dragDirection="dragUp"
-            motion:onTouchUp="stop"
-            motion:touchAnchorId="@+id/header" />
+            motion:touchAnchorId="@+id/scrollable_header"
+            motion:touchAnchorSide="top" />
     </Transition>
 
     <ConstraintSet android:id="@+id/start">
         <Constraint
-            android:id="@+id/header"
+            android:id="@+id/scrollable_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             motion:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +25,7 @@
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@+id/header"
+            android:id="@+id/scrollable_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             motion:layout_constraintBottom_toTopOf="parent"

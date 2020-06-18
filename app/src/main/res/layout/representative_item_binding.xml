@@ -9,7 +9,7 @@
             type="com.example.android.politicalpreparedness.representative.model.Representative" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
@@ -17,15 +17,18 @@
             android:id="@+id/round_card"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            app:cardCornerRadius="50dp">
+            app:cardCornerRadius="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/representativePhoto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/profileImage"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_profile"
                 app:profileImage="@{representative.official.photoUrl}" />
@@ -38,32 +41,32 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/round_card"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{representative.office.name}"
             android:textColor="@color/colorPrimary"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            app:layout_constraintLeft_toRightOf="@id/round_card"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/representative_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/representative_office_name"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
-            android:layout_toEndOf="@id/round_card"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{representative.official.name}"
             android:textColor="@color/colorPrimary"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            app:layout_constraintLeft_toRightOf="@id/round_card"
+            app:layout_constraintTop_toBottomOf="@+id/representative_office_name" />
 
         <TextView
             android:id="@+id/representative_party"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/representative_name"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_toEndOf="@id/round_card"
@@ -71,35 +74,39 @@
             android:maxLines="1"
             android:text="@{representative.official.party}"
             android:textColor="@color/colorPrimary"
-            android:textSize="13sp" />
+            android:textSize="13sp"
+            app:layout_constraintLeft_toRightOf="@id/round_card"
+            app:layout_constraintTop_toBottomOf="@id/representative_name" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginEnd="10dp"
-            android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/wwwIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="120dp"
+            android:contentDescription="@string/wwwImage"
+            android:src="@drawable/ic_www"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <ImageView
-                android:id="@+id/wwwIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_www" />
+        <ImageView
+            android:id="@+id/facebookIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/facebookIcon"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/wwwIcon" />
 
-            <ImageView
-                android:id="@+id/facebookIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_facebook" />
-
-            <ImageView
-                android:id="@+id/twitterIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_twitter" />
-        </LinearLayout>
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/twitterIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/twitterIcon"
+            android:src="@drawable/ic_twitter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/facebookIcon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
